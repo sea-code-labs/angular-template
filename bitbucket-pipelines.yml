@@ -6,6 +6,6 @@ pipelines:
         clone:
           enabled: false
         script:
-          - git clone --bare git@github.com:sea-code-labs/template-angular.git
+          - git clone --bare git@bitbucket.org:sea-code-labs/angular-template.git
           - cd template-angular.git
           - git push --mirror git@github.com:sea-code-labs/template-angular.git
