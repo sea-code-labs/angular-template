@@ -33,10 +33,8 @@ pipelines:
             if [[ "$branch" =~ ^origin/feature-.* ]]; then
             echo "Deleting merged branch ${branch#origin/}"
             git push origin --delete "${branch#origin/}"
-            fi
             done
-            else
-            echo "Not a merge to 'develop', skipping branch cleanup."
+            fi
             fi
 
     - step:
