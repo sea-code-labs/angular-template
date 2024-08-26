@@ -1,8 +1,19 @@
+image: alpine/git:latest
+
 pipelines:
   default:
     - step:
-        name: Clean up branches
-        image: alpine/git:latest
+          name: Validate Branch and Commits
+          script:
+            - echo "Validating branch name and commit count..."
+            - current_branch=$(git rev-parse --abbrev-ref HEAD)
+            - if [[ ! "$current_branch" =~ ^feature- ]]; then
+              echo "Error: Branch name must start with 'feature-'.";
+              exit 1;
+              fi
+              
+    - step:
+        name: Clean Up Branches
         script:
           - echo "Fetching all branches..."
           - git fetch --all
@@ -10,9 +21,9 @@ pipelines:
           - git branch -r --merged origin/develop | grep -v '\->' | grep -v 'develop$' | while read -r branch; do
             git push origin --delete "${branch#origin/}";
             done
+
     - step:
         name: Sync GitHub Mirror
-        image: alpine/git:latest
         clone:
           enabled: false
         script:
