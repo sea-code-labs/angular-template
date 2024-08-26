@@ -10,42 +10,42 @@ pipelines:
             - printenv
 
       - step:
-          name: Clean Up Merged Feature Branches
-          script:
-            - echo "Fetching all branches..."
-            - git fetch --all
-            - if [ "$BITBUCKET_PR_DESTINATION" == "develop" ]; then
-              echo "PR is targeting 'develop'. Proceeding with branch cleanup...";
-              merged_branches=$(git branch -r --merged origin/develop | grep -v '\->' | grep -E 'origin/feature-.*');
-              echo "$merged_branches" | while read -r branch; do
-              if [[ "$branch" =~ ^origin/feature-.* ]]; then
-              echo "Deleting merged branch ${branch#origin/}";
-              git push origin --delete "${branch#origin/}";
-              fi
-              done;
-              else
-              echo "Not a merge to 'develop', skipping branch cleanup.";
-              fi
-
-      - step:
           name: Check PR Source for Main
           script:
             - echo "Checking PR source branch..."
-            - if [ -n "$BITBUCKET_PR_DESTINATION_BRANCH" ]; then
-              echo "PR destination is set to $BITBUCKET_PR_DESTINATION_BRANCH";
-              if [ "$BITBUCKET_PR_DESTINATION_BRANCH" == "main" ]; then
-              echo "PR targets 'main'. Verifying source branch...";
-              if [ "$BITBUCKET_BRANCH" != "develop" ]; then
-              echo "Error PR to 'main' must come from 'develop'. Current source branch is $BITBUCKET_BRANCH.";
-              exit 1;
+            - |
+              if [ -n "$BITBUCKET_PR_DESTINATION_BRANCH" ]; then
+                echo "PR destination is set to $BITBUCKET_PR_DESTINATION_BRANCH"
+                if [ "$BITBUCKET_PR_DESTINATION_BRANCH" = "main" ]; then
+                  echo "PR targets 'main'. Verifying source branch..."
+                  if [ "$BITBUCKET_BRANCH" != "develop" ]; then
+                    echo "Error: PR to 'main' must come from 'develop'. Current source branch is $BITBUCKET_BRANCH."
+                    exit 1
+                  else
+                    echo "PR source branch is 'develop'. Check passed."
+                  fi
+                else
+                  echo "PR does not target 'main', skipping source branch check."
+                fi
               else
-              echo "PR source branch is 'develop'. Check passed.";
+                echo "Not in a PR context, skipping source branch check."
               fi
-              else
-              echo "PR does not target 'main', skipping source branch check.";
-              fi
-              else
-              echo "Not in a PR context, skipping source branch check.";
+
+      - step:
+          name: Clean Up Merged Feature Branches
+          script:
+            - echo "Fetching all branches..."
+            - |
+              git fetch --all
+              if [ "$BITBUCKET_PR_DESTINATION_BRANCH" = "develop" ]; then
+                echo "PR is targeting 'develop'. Proceeding with branch cleanup..."
+                merged_branches=$(git branch -r --merged origin/develop | grep -v '\->' | grep -E 'origin/feature-.*')
+                echo "$merged_branches" | while read -r branch; do
+                if [[ "$branch" =~ ^origin/feature- ]]; then
+                  echo "Deleting merged branch ${branch#origin/}"
+                  git push origin --delete "${branch#origin/}"
+                fi
+                done
               fi
 
       - step:
@@ -59,28 +59,22 @@ pipelines:
             - echo "Pushing to GitHub mirror..."
             - git push --mirror git@github.com:sea-code-labs/angular-template.git
 
-
   default:
     - step:
         name: Debug Environment Variables
         script:
-            - echo "Available environment variables:"
-            - printenv
+          - echo "Available environment variables:"
+          - printenv
 
     - step:
-        name: Validate Branch and Commits
+        name: Validate Branch Name
         script:
-          - echo "Validating branch name and commit count..."
-          - current_branch=$(git rev-parse --abbrev-ref HEAD)
-          - target_branch=${BITBUCKET_PR_DESTINATION:-$current_branch}
-          - if [[ -z "$BITBUCKET_PR_DESTINATION" || "$target_branch" == "main" || "$target_branch" == "develop" ]]; then
-            echo "Not validating branch name because it's a PR to 'main' or 'develop' or not a PR.";
-            else
-            if [[ ! "$current_branch" =~ ^feature-.* ]]; then
-            echo "Branch name must start with 'feature-'.";
-            exit 1;
-            fi
-            fi
+          - echo "Validating branch name..."
+          - |
+              if [[ ! "$BITBUCKET_BRANCH" =~ ^feature- ]]; then
+                echo "Branch name must start with 'feature-'.";
+                exit 1;
+              fi
 
     - step:
         name: Sync GitHub Mirror
