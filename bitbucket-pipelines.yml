@@ -1,20 +1,23 @@
 image: alpine/git:latest
 
-pipelines:
-  default:
+pull-requests:
+  '**':
     - step:
-        name: Validate Branch and Commits
+        name: Clean Up Merged Feature Branches
         script:
-          - echo "Validating branch name and commit count..."
-          - current_branch=$(git rev-parse --abbrev-ref HEAD)
-          - target_branch=${BITBUCKET_PR_DESTINATION:-$current_branch}
-          - if [[ -z "$BITBUCKET_PR_DESTINATION" || "$target_branch" == "main" || "$target_branch" == "develop" ]]; then
-            echo "Not validating branch name because it's a PR to 'main' or 'develop' or not a PR.";
-            else
-            if [[ ! "$current_branch" =~ ^feature-.* ]]; then
-            echo "Branch name must start with 'feature-'.";
-            exit 1;
+          - echo "Fetching all branches..."
+          - git fetch --all
+          - if [ "$BITBUCKET_PR_DESTINATION" == "develop" ]; then
+            echo "PR is targeting 'develop'. Proceeding with branch cleanup...";
+            merged_branches=$(git branch -r --merged origin/develop | grep -v '\->' | grep -E 'origin/feature-.*');
+            echo "$merged_branches" | while read -r branch; do
+            if [[ "$branch" =~ ^origin/feature-.* ]]; then
+            echo "Deleting merged branch ${branch#origin/}";
+            git push origin --delete "${branch#origin/}";
             fi
+            done;
+            else
+            echo "Not a merge to 'develop', skipping branch cleanup.";
             fi
 
     - step:
@@ -38,24 +41,28 @@ pipelines:
             echo "Not in a PR context, skipping source branch check.";
             fi
 
+pipelines:
+  default:
     - step:
-        name: Clean Up Merged Feature Branches
+        name: Debug Environment Variables
         script:
-          - echo "Fetching all branches..."
-          - git fetch --all
-          - if [ "$BITBUCKET_PR_DESTINATION" == "develop" ]; then
-            echo "PR is targeting 'develop'. Proceeding with branch cleanup...";
-            merged_branches=$(git branch -r --merged origin/develop | grep -v '\->' | grep -E 'origin/feature-.*');
-            echo "$merged_branches" | while read -r branch; do
-            if [[ "$branch" =~ ^origin/feature-.* ]]; then
-            echo "Deleting merged branch ${branch#origin/}";
-            git push origin --delete "${branch#origin/}";
-            fi
-            done;
-            else
-            echo "Not a merge to 'develop', skipping branch cleanup.";
-            fi
+            - echo "Available environment variables:"
+            - printenv
 
+    - step:
+        name: Validate Branch and Commits
+        script:
+          - echo "Validating branch name and commit count..."
+          - current_branch=$(git rev-parse --abbrev-ref HEAD)
+          - target_branch=${BITBUCKET_PR_DESTINATION:-$current_branch}
+          - if [[ -z "$BITBUCKET_PR_DESTINATION" || "$target_branch" == "main" || "$target_branch" == "develop" ]]; then
+            echo "Not validating branch name because it's a PR to 'main' or 'develop' or not a PR.";
+            else
+            if [[ ! "$current_branch" =~ ^feature-.* ]]; then
+            echo "Branch name must start with 'feature-'.";
+            exit 1;
+            fi
+            fi
 
     - step:
         name: Sync GitHub Mirror
