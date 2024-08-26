@@ -10,6 +10,12 @@ pipelines:
             - printenv
 
       - step:
+          name: Install Node.js and Dependencies
+          script:
+            - apk add --no-cache nodejs npm
+            - npm install
+
+      - step:
           name: Check PR Source for Main
           script:
             - echo "Checking PR source branch..."
@@ -95,6 +101,12 @@ pipelines:
           script:
             - echo "Available environment variables:"
             - printenv
+
+      - step:
+          name: Install Node.js and Dependencies
+          script:
+            - apk add --no-cache nodejs npm
+            - npm install
 
       - step:
           name: Validate Branch Name
