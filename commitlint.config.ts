@@ -13,7 +13,7 @@ module.exports = {
           const jiraAndTypeRegex: RegExp = /^SC-\d+\s(feat|fix|docs|style|refactor|test|chore):\s.+/;
           return [
             jiraAndTypeRegex.test(header),
-            'Header must contain a JIRA issue number starting with SC- followed by a type and description \n' + 'example: SC-0 test: test',
+            'Header must contain a JIRA issue number starting with SC- followed by a type and description \n' + 'example: SC-[number] [feat|fix|docs|style|refactor|test|chore]: [message] [?version]',
           ];
         },
       },
