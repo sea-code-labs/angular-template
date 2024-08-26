@@ -62,6 +62,12 @@ pipelines:
   branches:
     '**':
       - step:
+          name: Debug Environment Variables
+          script:
+            - echo "Available environment variables:"
+            - printenv
+
+      - step:
           name: Validate Branch Name
           script:
             - echo "Validating branch name..."
