@@ -1,0 +1,7 @@
+{
+  "extends": "stylelint-config-recommended",
+  "rules": {
+    "no-duplicate-selectors": true,
+    "block-no-empty": true
+  }
+}

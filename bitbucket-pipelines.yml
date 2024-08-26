@@ -1,0 +1,11 @@
+pipelines:
+  default:
+    - step:
+        name: Sync GitHub Mirror
+        image: alpine/git:latest
+        clone:
+          enabled: false
+        script:
+          - git clone --bare git@github.com:sea-code-labs/template-angular.git
+          - cd template-angular.git
+          - git push --mirror git@github.com:sea-code-labs/template-angular.git
