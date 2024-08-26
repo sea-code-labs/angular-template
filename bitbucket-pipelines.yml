@@ -4,6 +4,12 @@ pipelines:
   pull-requests:
     '**':
       - step:
+          name: Debug Environment Variables
+          script:
+            - echo "Available environment variables:"
+            - printenv
+
+      - step:
           name: Clean Up Merged Feature Branches
           script:
             - echo "Fetching all branches..."
