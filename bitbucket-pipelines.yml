@@ -6,8 +6,8 @@ pipelines:
         clone:
           enabled: false
         script:
-          - echo "Cloning Bitbucket repository..."
+          - echo "[-] Cloning Bitbucket repository..."
           - git clone --bare git@bitbucket.org:sea-code-labs/angular-template.git
           - cd template-angular.git
-          - echo "Pushing to GitHub mirror..."
+          - echo "[-] Pushing to GitHub mirror..."
           - git push --mirror git@github.com:sea-code-labs/template-angular.git
