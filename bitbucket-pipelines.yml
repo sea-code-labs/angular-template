@@ -19,8 +19,6 @@ pipelines:
             echo "Branch name must start with 'feature-'.";
             exit 1;
             fi
-            else
-            echo "Not a merge to 'develop' or 'main', skipping validation."
             fi
 
     - step:
