@@ -23,7 +23,7 @@ pipelines:
           - echo "Checking if the pull request is targeting 'main' branch..."
           - echo "BITBUCKET_PR_DESTINATION $BITBUCKET_PR_DESTINATION"
           - echo "BITBUCKET_PR_SOURCE $BITBUCKET_PR_SOURCE"
-          - if [[ -z "$BITBUCKET_PR_DESTINATION" || "$target_branch" == "main" ]]; then
+          - if [ "$BITBUCKET_PR_DESTINATION" == "main" ]; then
             echo "Pull request targets 'main'. Checking if source branch is 'develop'...";
             if [ "$BITBUCKET_PR_SOURCE" != "develop" ]; then
             echo "Error Pull request to 'main' must come from 'develop'. Current source branch is $BITBUCKET_PR_SOURCE.";
