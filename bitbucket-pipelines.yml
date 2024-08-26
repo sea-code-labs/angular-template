@@ -7,9 +7,8 @@ pipelines:
         script:
           - echo "Validating branch name and commit count..."
           - current_branch=$(git rev-parse --abbrev-ref HEAD)
-          - target_branch=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-$current_branch}
-
-          - if [[ -z "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" || "$target_branch" == "main" || "$target_branch" == "develop" ]]; then
+          - target_branch=${BITBUCKET_PR_DESTINATION:-$current_branch}
+          - if [[ -z "$BITBUCKET_PR_DESTINATION" || "$target_branch" == "main" || "$target_branch" == "develop" ]]; then
             echo "Not validating branch name because it's a PR to 'main' or 'develop' or not a PR.";
             else
             if [[ ! "$current_branch" =~ ^feature-.* ]]; then
@@ -22,16 +21,16 @@ pipelines:
         name: Check PR Source for Main
         script:
           - echo "Checking if the pull request is from 'develop' branch..."
-          - |
-            if [ "$BITBUCKET_PR_DESTINATION" == "main" ]; then
-              git fetch --all
-              source_branch=$BITBUCKET_PR_SOURCE
-              if [ "$source_branch" != "develop" ]; then
-                echo "Error: Pull request to 'main' must come from 'develop' branch.";
-                exit 1;
-              fi
+          - if [ "$BITBUCKET_PR_DESTINATION" == "main" ]; then
+            echo "This is a PR to 'main'. Checking source branch...";
+            git fetch --all
+            source_branch=$(git for-each-ref --format '%(refname:short)' $(git symbolic-ref --short HEAD))
+            if [ "$source_branch" != "develop" ]; then
+            echo "Pull request to 'main' must come from 'develop' branch.";
+            exit 1;
+            fi
             else
-              echo "Not a pull request to 'main', skipping branch check.";
+            echo "Not a pull request to 'main', skipping branch check.";
             fi
 
     - step:
@@ -40,8 +39,11 @@ pipelines:
           - echo "Fetching all branches..."
           - git fetch --all
           - echo "Cleaning up merged branches..."
-          - git branch -r --merged origin/develop | grep -v '\->' | grep -v 'develop$' | while read -r branch; do
+          - merged_branches=$(git branch -r --merged origin/develop | grep -v '\->' | grep -v 'develop$')
+          - echo "$merged_branches" | while read -r branch; do
+            if [[ "$branch" != "origin/develop" ]]; then
             git push origin --delete "${branch#origin/}";
+            fi
             done
 
     - step:
