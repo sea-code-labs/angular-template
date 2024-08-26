@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 PROCESS_DIR="$(pwd)"
 DIR_HELPER=$(dirname "$0")
 REAL_HUSKY_MOD_PROJECT_DIR=$(realpath "$DIR_HELPER")

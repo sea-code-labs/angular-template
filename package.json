@@ -2,6 +2,7 @@
   "name": "angular-template",
   "version": "1800.0.0",
   "scripts": {
+    "prepare": "husky",
     "-----REPO/PROJECT-MANAGEMENT-----": "exit 0",
     "npm:i": "npm cache clean -f && rimraf node_modules/ && npm i --legacy-peer-deps",
     "clean": "rimraf node_modules/ && rimraf ./package-lock.json && npm cache clean -f",
@@ -10,11 +11,8 @@
     "prettier": "npx prettier --write",
     "eslint": "npx eslint --fix",
     "-----ANGULAR-----": "exit 0",
-    "ng:app": "ng generate application",
-    "ng:lib": "ng generate library",
-    "-----GIT-----": "exit 0",
-    "git:push": "git push -u origin",
-    "prepare": "husky"
+    "ng:app": "node ./scripts/create-app.js",
+    "ng:lib": "node ./scripts/create-lib.js"
   },
   "private": true,
   "dependencies": {
@@ -60,6 +58,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "lint-staged": "~15.2.9",
+    "ng-packagr": "^18.2.0",
     "prettier": "~3.3.3",
     "stylelint": "~16.8.2",
     "stylelint-config-recommended": "~14.0.1",
