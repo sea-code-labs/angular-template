@@ -13,7 +13,7 @@ pipelines:
         script:
           - echo "Validating branch name..."
           - current_branch=$(git rev-parse --abbrev-ref HEAD)
-          - target_branch=${BITBUCKET_PR_DESTINATION_BRANCH:-$current_branch}
+          - target_branch=${BITBUCKET_PR_DESTINATION:-$current_branch}
           - if [ -n "$BITBUCKET_PR_DESTINATION_BRANCH" ] && { [ "$target_branch" == "main" ] || [ "$target_branch" == "develop" ]; }; then
             echo "Not validating branch name because it's a PR to 'main' or 'develop'.";
             else
@@ -21,6 +21,8 @@ pipelines:
             echo "Branch name must start with 'feature-'.";
             exit 1;
             fi
+            else
+            echo "Not a merge to 'develop' or 'main', skipping validation."
             fi
 
     - step:
