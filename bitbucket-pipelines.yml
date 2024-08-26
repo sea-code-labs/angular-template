@@ -21,7 +21,7 @@ pipelines:
         name: Check PR Source for Main
         script:
           - echo "Checking if the pull request is from 'develop' branch..."
-          - if [ "$BITBUCKET_PR_DESTINATION" == "main" ]; then
+          - if [ -n "$BITBUCKET_PR_DESTINATION" ] && [ "$BITBUCKET_PR_DESTINATION" == "main" ]; then
             echo "This is a PR to 'main'. Checking source branch...";
             git fetch --all
             source_branch=$(git for-each-ref --format '%(refname:short)' $(git symbolic-ref --short HEAD))
