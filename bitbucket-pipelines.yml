@@ -21,19 +21,21 @@ pipelines:
         name: Check PR Source for Main
         script:
           - echo "Checking PR source branch..."
-          - if [[ -n "$BITBUCKET_PR_DESTINATION" ]]; then
-            if [[ "$BITBUCKET_PR_DESTINATION" == "main" ]]; then
-            if [[ "$BITBUCKET_PR_SOURCE" != "develop" ]]; then
-            echo "Error PR to 'main' must come from 'develop'. Current source branch is $BITBUCKET_PR_SOURCE."
-            exit 1
+          - if [ -n "$BITBUCKET_PR_DESTINATION" ]; then
+            echo "PR destination is set to $BITBUCKET_PR_DESTINATION";
+            if [ "$BITBUCKET_PR_DESTINATION" == "main" ]; then
+            echo "PR targets 'main'. Verifying source branch...";
+            if [ "$BITBUCKET_PR_SOURCE" != "develop" ]; then
+            echo "Error PR to 'main' must come from 'develop'. Current source branch is $BITBUCKET_PR_SOURCE.";
+            exit 1;
             else
-            echo "PR source branch is 'develop'. Check passed."
+            echo "PR source branch is 'develop'. Check passed.";
             fi
             else
-            echo "PR does not target 'main', skipping source branch check."
+            echo "PR does not target 'main', skipping source branch check.";
             fi
             else
-            echo "Not in a PR context, skipping source branch check."
+            echo "Not in a PR context, skipping source branch check.";
             fi
 
     - step:
