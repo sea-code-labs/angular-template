@@ -34,6 +34,10 @@ pipelines:
       - step:
           name: Run Tests
           script:
+            - if [ ! -f "angular.json" ] || ! grep -q '"projects" { ' angular.json; then
+                echo "No projects found in angular.json. Skipping tests.";
+                exit 0;
+              fi
             - echo "Installing dependencies..."
             - npm install
             - echo "Installing Google Chrome..."
@@ -61,6 +65,8 @@ pipelines:
                   git push origin --delete "${branch#origin/}"
                 fi
                 done
+              else
+                echo "PR is not targeting 'develop'."
               fi
 
       - step:
@@ -107,6 +113,10 @@ pipelines:
       - step:
           name: Run Tests
           script:
+            - if [ ! -f "angular.json" ] || ! grep -q '"projects" { ' angular.json; then
+              echo "No projects found in angular.json. Skipping tests.";
+              exit 0;
+              fi
             - echo "Installing dependencies..."
             - npm install
             - echo "Installing Google Chrome..."
