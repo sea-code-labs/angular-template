@@ -36,8 +36,15 @@ pipelines:
           script:
             - echo "Installing dependencies..."
             - npm install
+            - echo "Installing Google Chrome..."
+            - apt-get update && apt-get install -y wget gnupg
+            - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+            - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
+            - apt-get update && apt-get install -y google-chrome-stable
+            - echo "Setting CHROME_BIN environment variable..."
+            - export CHROME_BIN=/usr/bin/google-chrome
             - echo "Running Karma tests..."
-            - npm run test -- --browsers=ChromeHeadlessNoSandbox || exit 1
+            - npm run test -- --browsers=ChromeHeadlessNoSandbox
 
       - step:
           name: Clean Up Merged Feature Branches
@@ -102,8 +109,15 @@ pipelines:
           script:
             - echo "Installing dependencies..."
             - npm install
+            - echo "Installing Google Chrome..."
+            - apt-get update && apt-get install -y wget gnupg
+            - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+            - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
+            - apt-get update && apt-get install -y google-chrome-stable
+            - echo "Setting CHROME_BIN environment variable..."
+            - export CHROME_BIN=/usr/bin/google-chrome
             - echo "Running Karma tests..."
-            - npm run test -- --browsers=ChromeHeadlessNoSandbox || exit 1
+            - npm run test -- --browsers=ChromeHeadlessNoSandbox
 
       - step:
           name: Sync GitHub Mirror
