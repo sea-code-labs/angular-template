@@ -13,6 +13,20 @@ pipelines:
             fi
 
     - step:
+        name: Check PR Source for Main
+        script:
+          - echo "Checking if the pull request is from 'develop' branch..."
+          - |
+            git fetch --all
+            base_branch=$(git rev-parse --abbrev-ref HEAD)
+            if [ "$base_branch" == "main" ]; then
+            source_branch=$(git rev-parse --abbrev-ref $(git merge-base HEAD $(git for-each-ref --format '%(upstream:short)' $(git symbolic-ref -q HEAD))))
+            if [ "$source_branch" != "develop" ]; then
+              echo "Error: Pull request to 'main' must come from 'develop' branch.";
+              exit 1;
+            fi
+
+    - step:
         name: Clean Up Branches
         script:
           - echo "Fetching all branches..."
