@@ -7,9 +7,15 @@ pipelines:
         script:
           - echo "Validating branch name and commit count..."
           - current_branch=$(git rev-parse --abbrev-ref HEAD)
-          - if [[ ! "$current_branch" =~ ^feature-.* ]]; then
+          - target_branch=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-$current_branch}
+
+          - if [[ -z "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" || "$target_branch" == "main" || "$target_branch" == "develop" ]]; then
+            echo "Not validating branch name because it's a PR to 'main' or 'develop' or not a PR.";
+            else
+            if [[ ! "$current_branch" =~ ^feature-.* ]]; then
             echo "Branch name must start with 'feature-'.";
             exit 1;
+            fi
             fi
 
     - step:
