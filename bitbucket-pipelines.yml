@@ -31,12 +31,12 @@ pipelines:
           name: Check PR Source for Main
           script:
             - echo "Checking PR source branch..."
-            - if [ -n "$BITBUCKET_PR_DESTINATION" ]; then
-              echo "PR destination is set to $BITBUCKET_PR_DESTINATION";
-              if [ "$BITBUCKET_PR_DESTINATION" == "main" ]; then
+            - if [ -n "$BITBUCKET_PR_DESTINATION_BRANCH" ]; then
+              echo "PR destination is set to $BITBUCKET_PR_DESTINATION_BRANCH";
+              if [ "$BITBUCKET_PR_DESTINATION_BRANCH" == "main" ]; then
               echo "PR targets 'main'. Verifying source branch...";
-              if [ "$BITBUCKET_PR_SOURCE" != "develop" ]; then
-              echo "Error PR to 'main' must come from 'develop'. Current source branch is $BITBUCKET_PR_SOURCE.";
+              if [ "$BITBUCKET_BRANCH" != "develop" ]; then
+              echo "Error PR to 'main' must come from 'develop'. Current source branch is $BITBUCKET_BRANCH.";
               exit 1;
               else
               echo "PR source branch is 'develop'. Check passed.";
@@ -47,6 +47,17 @@ pipelines:
               else
               echo "Not in a PR context, skipping source branch check.";
               fi
+
+      - step:
+          name: Sync GitHub Mirror
+          clone:
+            enabled: false
+          script:
+            - echo "Cloning Bitbucket repository..."
+            - git clone --bare git@bitbucket.org:sea-code-labs/angular-template.git
+            - cd angular-template.git
+            - echo "Pushing to GitHub mirror..."
+            - git push --mirror git@github.com:sea-code-labs/angular-template.git
 
 
   default:
