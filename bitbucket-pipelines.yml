@@ -21,17 +21,25 @@ pipelines:
         name: Check PR Source for Main
         script:
           - echo "Checking if the pull request is from 'develop' branch..."
-          - if [ -n "$BITBUCKET_PR_DESTINATION" ] && [ "$BITBUCKET_PR_DESTINATION" == "main" ]; then
+          - if [ -n "$BITBUCKET_PR_DESTINATION" ]; then
+            echo "Running in a PR context. Destination branch is $BITBUCKET_PR_DESTINATION.";
+            if [ "$BITBUCKET_PR_DESTINATION" == "main" ]; then
             echo "This is a PR to 'main'. Checking source branch...";
             git fetch --all
-            source_branch=$(git for-each-ref --format '%(refname:short)' $(git symbolic-ref --short HEAD))
+            source_branch=$BITBUCKET_PR_SOURCE
             if [ "$source_branch" != "develop" ]; then
-            echo "Pull request to 'main' must come from 'develop' branch.";
+            echo "Pull request to 'main' must come from 'develop' branch. Source branch is $source_branch.";
             exit 1;
+            else
+            echo "Source branch is 'develop', PR check passed.";
             fi
             else
-            echo "Not a pull request to 'main', skipping branch check.";
+            echo "Destination branch is not 'main', skipping check.";
             fi
+            else
+            echo "Not in a PR context, skipping check.";
+            fi
+
 
     - step:
         name: Clean Up Branches
