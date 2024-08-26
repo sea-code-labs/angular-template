@@ -59,30 +59,25 @@ pipelines:
             - echo "Pushing to GitHub mirror..."
             - git push --mirror git@github.com:sea-code-labs/angular-template.git
 
-  default:
-    - step:
-        name: Debug Environment Variables
-        script:
-          - echo "Available environment variables:"
-          - printenv
-
-    - step:
-        name: Validate Branch Name
-        script:
-          - echo "Validating branch name..."
-          - |
+  branches:
+    '**':
+      - step:
+          name: Validate Branch Name
+          script:
+            - echo "Validating branch name..."
+            - |
               if [[ ! "$BITBUCKET_BRANCH" =~ ^feature- ]]; then
                 echo "Branch name must start with 'feature-'.";
                 exit 1;
               fi
 
-    - step:
-        name: Sync GitHub Mirror
-        clone:
-          enabled: false
-        script:
-          - echo "Cloning Bitbucket repository..."
-          - git clone --bare git@bitbucket.org:sea-code-labs/angular-template.git
-          - cd angular-template.git
-          - echo "Pushing to GitHub mirror..."
-          - git push --mirror git@github.com:sea-code-labs/angular-template.git
+      - step:
+          name: Sync GitHub Mirror
+          clone:
+            enabled: false
+          script:
+            - echo "Cloning Bitbucket repository..."
+            - git clone --bare git@bitbucket.org:sea-code-labs/angular-template.git
+            - cd angular-template.git
+            - echo "Pushing to GitHub mirror..."
+            - git push --mirror git@github.com:sea-code-labs/angular-template.git
