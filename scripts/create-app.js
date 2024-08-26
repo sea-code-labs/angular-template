@@ -1,5 +1,5 @@
 const { execSync } = require('child_process');
-const [,, name] = process.argv;
+const [, , name] = process.argv;
 
 if (!name) {
   console.error('Please provide the name of the application.');
