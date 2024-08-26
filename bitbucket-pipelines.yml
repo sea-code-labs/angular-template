@@ -32,8 +32,10 @@ pipelines:
               fi
 
       - step:
-          name: Install Node.js and Dependencies
+          name: Install Node.js, Angular CLI, and Dependencies
           script:
+            - apk add --no-cache git
+            - npm install -g @angular/cli
             - npm ci --force --legacy-peer-deps
 
       - step:
@@ -43,7 +45,7 @@ pipelines:
             - |
               if find ./projects -name "*.spec.ts" | grep -q .; then
                 echo "Running tests..."
-                ng test --watch=false
+                npx ng test --watch=false
 
                 if [ $? -ne 0 ]; then
                   echo "Tests failed."
@@ -112,8 +114,10 @@ pipelines:
               fi
 
       - step:
-          name: Install Node.js and Dependencies
+          name: Install Node.js, Angular CLI, and Dependencies
           script:
+            - apk add --no-cache git
+            - npm install -g @angular/cli
             - npm ci --force --legacy-peer-deps
 
       - step:
