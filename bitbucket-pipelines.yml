@@ -1,6 +1,16 @@
 pipelines:
   default:
     - step:
+        name: Clean up branches
+        image: alpine/git:latest
+        script:
+          - echo "Fetching all branches..."
+          - git fetch --all
+          - echo "Cleaning up merged branches..."
+          - git branch -r --merged origin/develop | grep -v '\->' | grep -v 'develop$' | while read -r branch; do
+            git push origin --delete "${branch#origin/}";
+            done
+    - step:
         name: Sync GitHub Mirror
         image: alpine/git:latest
         clone:
