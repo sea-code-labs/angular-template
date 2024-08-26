@@ -1,11 +1,12 @@
 image: alpine/git:latest
 
-default:
+pipelines:
+  default:
     - step:
         name: Debug Environment Variables
         script:
-            - echo "Available environment variables:"
-            - printenv
+          - echo "Available environment variables:"
+          - printenv
 
     - step:
         name: Validate Branch and Commits
@@ -22,11 +23,11 @@ default:
             exit 1;
             fi
 
-          - step:
-              name: Debug Environment Variables
-              script:
-                - echo "Available environment variables:"
-                - printenv
+    - step:
+        name: Debug Environment Variables
+        script:
+          - echo "Available environment variables:"
+          - printenv
 
     - step:
         name: Clean Up Merged Feature Branches
