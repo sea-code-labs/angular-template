@@ -1,4 +1,4 @@
-image: alpine/git:latest
+image: node:18
 
 pipelines:
   pull-requests:
@@ -32,21 +32,19 @@ pipelines:
               fi
 
       - step:
-          name: Check and Run Tests
+          name: Run Tests
           script:
-            - echo "Checking for test files..."
-            - |
-              if find ./projects -name "*.spec.ts" | grep -q .; then
-                echo "Running tests..."
-                npx ng test --watch=false
-
-                if [ $? -ne 0 ]; then
-                  echo "Tests failed."
-                  exit 1
-                fi
-              else
-                echo "No test files found. Skipping tests..."
-              fi
+            - echo "Installing dependencies..."
+            - npm install
+            - echo "Installing Google Chrome..."
+            - apt-get update && apt-get install -y wget gnupg
+            - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+            - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
+            - apt-get update && apt-get install -y google-chrome-stable
+            - echo "Setting CHROME_BIN environment variable..."
+            - export CHROME_BIN=/usr/bin/google-chrome
+            - echo "Running Karma tests..."
+            - npm run test -- --browsers=ChromeHeadlessNoSandbox
 
       - step:
           name: Clean Up Merged Feature Branches
@@ -107,21 +105,19 @@ pipelines:
               fi
 
       - step:
-          name: Check and Run Tests
+          name: Run Tests
           script:
-            - echo "Checking for test files..."
-            - |
-              if find ./projects -name "*.spec.ts" | grep -q .; then
-                echo "Running tests..."
-                npx ng test --watch=false
-
-                if [ $? -ne 0 ]; then
-                  echo "Tests failed."
-                  exit 1
-                fi
-              else
-                echo "No test files found. Skipping tests..."
-              fi
+            - echo "Installing dependencies..."
+            - npm install
+            - echo "Installing Google Chrome..."
+            - apt-get update && apt-get install -y wget gnupg
+            - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+            - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
+            - apt-get update && apt-get install -y google-chrome-stable
+            - echo "Setting CHROME_BIN environment variable..."
+            - export CHROME_BIN=/usr/bin/google-chrome
+            - echo "Running Karma tests..."
+            - npm run test -- --browsers=ChromeHeadlessNoSandbox
 
       - step:
           name: Sync GitHub Mirror
