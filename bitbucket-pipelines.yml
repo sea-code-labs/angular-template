@@ -22,7 +22,7 @@ pipelines:
         script:
           - echo "Checking PR source branch..."
           - if [ -n "$BITBUCKET_PR_DESTINATION" ]; then
-            echo "PR destination is set to $BITBUCKET_PR_DESTINATION"
+            echo "PR destination is set to $BITBUCKET_PR_DESTINATION";
             if [ "$BITBUCKET_PR_DESTINATION" == "main" ]; then
             echo "PR targets 'main'. Verifying source branch...";
             if [ "$BITBUCKET_PR_SOURCE" != "develop" ]; then
