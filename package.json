@@ -3,7 +3,7 @@
   "version": "1800.0.0",
   "scripts": {
     "prepare": "husky",
-    "test": "ng test --browsers=ChromeHeadlessNoSandbox",
+    "test": "ng test",
     "-----REPO/PROJECT-MANAGEMENT-----": "exit 0",
     "npm:i": "npm cache clean -f && rimraf node_modules/ && npm i --legacy-peer-deps",
     "clean": "rimraf node_modules/ && rimraf ./package-lock.json && npm cache clean -f",
