@@ -24,22 +24,22 @@ pipelines:
           - echo "BITBUCKET_PR_DESTINATION -> $BITBUCKET_PR_DESTINATION"
           - echo "BITBUCKET_PR_SOURCE -> $BITBUCKET_PR_SOURCE"
           - if [ -n "$BITBUCKET_PR_DESTINATION" ]; then
-            echo "Running in a PR context. Destination branch is $BITBUCKET_PR_DESTINATION."
+            echo "Running in a PR context. Destination branch is $BITBUCKET_PR_DESTINATION.";
             if [ "$BITBUCKET_PR_DESTINATION" == "main" ]; then
-            echo "This is a PR to 'main'. Checking source branch..."
-            git fetch --all
-            source_branch=$BITBUCKET_PR_SOURCE
+            echo "This is a PR to 'main'. Checking source branch...";
+            git fetch --all;
+            source_branch=$BITBUCKET_PR_SOURCE;
             if [ "$source_branch" != "develop" ]; then
-            echo "Pull request to 'main' must come from 'develop' branch. Source branch is $source_branch."
-            exit 1
+            echo "Pull request to 'main' must come from 'develop' branch. Source branch is $source_branch.";
+            exit 1;
             else
-            echo "Source branch is 'develop', PR check passed."
+            echo "Source branch is 'develop', PR check passed.";
             fi
             else
-            echo "Destination branch is not 'main', skipping check."
+            echo "Destination branch is not 'main', skipping check.";
             fi
             else
-            echo "Not in a PR context, skipping check."
+            echo "Not in a PR context, skipping check.";
             fi
 
     - step:
