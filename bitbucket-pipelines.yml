@@ -14,7 +14,7 @@ pipelines:
           script:
             - echo "Fetching all branches..."
             - git fetch --all
-            - if [ "$BITBUCKET_PR_DESTINATION" == "develop" ]; then
+            - if [ "$BITBUCKET_PR_DESTINATION_BRANCH" == "develop" ]; then
               echo "PR is targeting 'develop'. Proceeding with branch cleanup...";
               merged_branches=$(git branch -r --merged origin/develop | grep -v '\->' | grep -E 'origin/feature-.*');
               echo "$merged_branches" | while read -r branch; do
@@ -73,7 +73,8 @@ pipelines:
           - echo "Validating branch name and commit count..."
           - current_branch=$(git rev-parse --abbrev-ref HEAD)
           - target_branch=${BITBUCKET_PR_DESTINATION:-$current_branch}
-          - if [[ -z "$BITBUCKET_PR_DESTINATION" || "$target_branch" == "main" || "$target_branch" == "develop" ]]; then
+          - if [[ -z "$BITBUCKET_PR_DESTINATION_BRANCH" || "$target_branch" == "main" || "$target_branch" == "develop"]];
+          - then
             echo "Not validating branch name because it's a PR to 'main' or 'develop' or not a PR.";
             else
             if [[ ! "$current_branch" =~ ^feature-.* ]]; then
