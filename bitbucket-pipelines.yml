@@ -60,13 +60,19 @@ pipelines:
             - git push --mirror git@github.com:sea-code-labs/angular-template.git
 
   branches:
-    '**':
+    main:
       - step:
-          name: Debug Environment Variables
+          name: Main
           script:
-            - echo "Available environment variables:"
-            - printenv
+            - echo "Main branch..."
 
+    develop:
+      - step:
+          name: Develop
+          script:
+            - echo "Develop branch..."
+
+    '**':
       - step:
           name: Validate Branch Name
           script:
