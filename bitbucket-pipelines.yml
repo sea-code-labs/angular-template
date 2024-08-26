@@ -61,6 +61,8 @@ pipelines:
                   git push origin --delete "${branch#origin/}"
                 fi
                 done
+              else
+                echo "PR is not targeting 'develop'."
               fi
 
       - step:
