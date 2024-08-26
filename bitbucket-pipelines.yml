@@ -23,23 +23,6 @@ pipelines:
             fi
 
     - step:
-        name: Clean Up Merged Feature Branches
-        script:
-          - echo "Fetching all branches..."
-          - |
-            git fetch --all
-            if [ "$BITBUCKET_PR_DESTINATION_BRANCH" = "develop" ]; then
-              echo "PR is targeting 'develop'. Proceeding with branch cleanup..."
-              merged_branches=$(git branch -r --merged origin/develop | grep -v '\->' | grep -E 'origin/feature-.*')
-              echo "$merged_branches" | while read -r branch; do
-                if [[ "$branch" =~ ^origin/feature- ]]; then
-                  echo "Deleting merged branch ${branch#origin/}"
-                  git push origin --delete "${branch#origin/}"
-                fi
-              done
-            fi
-
-    - step:
         name: Check PR Source for Main
         script:
           - echo "Checking PR source branch..."
@@ -59,6 +42,23 @@ pipelines:
               fi
             else
               echo "Not in a PR context, skipping source branch check."
+            fi
+
+    - step:
+        name: Clean Up Merged Feature Branches
+        script:
+          - echo "Fetching all branches..."
+          - |
+            git fetch --all
+            if [ "$BITBUCKET_PR_DESTINATION_BRANCH" = "develop" ]; then
+              echo "PR is targeting 'develop'. Proceeding with branch cleanup..."
+              merged_branches=$(git branch -r --merged origin/develop | grep -v '\->' | grep -E 'origin/feature-.*')
+              echo "$merged_branches" | while read -r branch; do
+                if [[ "$branch" =~ ^origin/feature- ]]; then
+                  echo "Deleting merged branch ${branch#origin/}"
+                  git push origin --delete "${branch#origin/}"
+                fi
+              done
             fi
 
     - step:
