@@ -9,36 +9,31 @@ pipelines:
           - printenv
 
     - step:
-        name: Validate Branch and Commits
+        name: Validate Branch Name
         script:
-          - echo "Validating branch name and commit count..."
+          - echo "Validating branch name..."
           - current_branch=$(git rev-parse --abbrev-ref HEAD)
           - target_branch=${BITBUCKET_PR_DESTINATION_BRANCH:-$current_branch}
-          - if [ "$BITBUCKET_PR_DESTINATION_BRANCH" && ("$target_branch" == "main" || "$target_branch" == "develop") ];
+          - if [[ "$BITBUCKET_PR_DESTINATION_BRANCH" && ("$target_branch" == "main" || "$target_branch" ==
+          - "develop") ]];
           - then
             echo "Not validating branch name because it's a PR to 'main' or 'develop'.";
             else
-            if [ !"$current_branch" =~ ^feature-.* ]; then
+            if [[ !"$current_branch" =~ ^feature-.* ]]; then
             echo "Branch name must start with 'feature-'.";
             exit 1;
             fi
-
-    - step:
-        name: Debug Environment Variables
-        script:
-          - echo "Available environment variables:"
-          - printenv
 
     - step:
         name: Clean Up Merged Feature Branches
         script:
           - echo "Fetching all branches..."
           - git fetch --all
-          - if [ "$BITBUCKET_PR_DESTINATION_BRANCH" == "develop" ]; then
+          - if [[ "$BITBUCKET_PR_DESTINATION_BRANCH" == "develop" ]]; then
             echo "PR is targeting 'develop'. Proceeding with branch cleanup...";
             merged_branches=$(git branch -r --merged origin/develop | grep -v '\->' | grep -E 'origin/feature-.*');
             echo "$merged_branches" | while read -r branch; do
-            if [ "$branch" =~ ^origin/feature-.* ]; then
+            if [[ "$branch" =~ ^origin/feature-.* ]]; then
             echo "Deleting merged branch ${branch#origin/}";
             git push origin --delete "${branch#origin/}";
             fi
@@ -51,11 +46,11 @@ pipelines:
         name: Check PR Source for Main
         script:
           - echo "Checking PR source branch..."
-          - if [ -n "$BITBUCKET_PR_DESTINATION_BRANCH" ]; then
+          - if [[ -n "$BITBUCKET_PR_DESTINATION_BRANCH" ]]; then
             echo "PR destination is set to $BITBUCKET_PR_DESTINATION_BRANCH";
-            if [ "$BITBUCKET_PR_DESTINATION_BRANCH" == "main" ]; then
+            if [[ "$BITBUCKET_PR_DESTINATION_BRANCH" == "main" ]]; then
             echo "PR targets 'main'. Verifying source branch...";
-            if [ "$BITBUCKET_BRANCH" != "develop" ]; then
+            if [[ "$BITBUCKET_BRANCH" != "develop" ]]; then
             echo "Error PR to 'main' must come from 'develop'. Current source branch is $BITBUCKET_BRANCH.";
             exit 1;
             else
