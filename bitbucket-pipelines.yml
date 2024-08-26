@@ -37,7 +37,7 @@ pipelines:
             - echo "Installing dependencies..."
             - npm install
             - echo "Running Karma tests..."
-            - npm run test -- --singleRun --browsers=ChromeHeadlessNoSandbox
+            - npm run test -- --singleRun --browsers=ChromeHeadlessNoSandbox || exit 1
 
       - step:
           name: Clean Up Merged Feature Branches
@@ -103,7 +103,7 @@ pipelines:
             - echo "Installing dependencies..."
             - npm install
             - echo "Running Karma tests..."
-            - npm run test -- --singleRun --browsers=ChromeHeadlessNoSandbox
+            - npm run test -- --singleRun --browsers=ChromeHeadlessNoSandbox || exit 1
 
       - step:
           name: Sync GitHub Mirror
