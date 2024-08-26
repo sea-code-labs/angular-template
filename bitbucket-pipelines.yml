@@ -7,9 +7,8 @@ pipelines:
         script:
           - echo "Validating branch name and commit count..."
           - current_branch=$(git rev-parse --abbrev-ref HEAD)
-          - target_branch=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-$current_branch}
-
-          - if [[ -z "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" || "$target_branch" == "main" || "$target_branch" == "develop" ]]; then
+          - target_branch=${BITBUCKET_PR_DESTINATION:-$current_branch}
+          - if [[ -z "$BITBUCKET_PR_DESTINATION" || "$target_branch" == "main" || "$target_branch" == "develop" ]]; then
             echo "Not validating branch name because it's a PR to 'main' or 'develop' or not a PR.";
             else
             if [[ ! "$current_branch" =~ ^feature-.* ]]; then
@@ -22,27 +21,45 @@ pipelines:
         name: Check PR Source for Main
         script:
           - echo "Checking if the pull request is from 'develop' branch..."
-          - |
+          - echo "BITBUCKET_PR_DESTINATION -> $BITBUCKET_PR_DESTINATION"
+          - echo "BITBUCKET_PR_SOURCE -> $BITBUCKET_PR_SOURCE"
+          - if [ -n "$BITBUCKET_PR_DESTINATION" ]; then
+            echo "Running in a PR context. Destination branch is $BITBUCKET_PR_DESTINATION.";
             if [ "$BITBUCKET_PR_DESTINATION" == "main" ]; then
-              git fetch --all
-              source_branch=$BITBUCKET_PR_SOURCE
-              if [ "$source_branch" != "develop" ]; then
-                echo "Error: Pull request to 'main' must come from 'develop' branch.";
-                exit 1;
-              fi
+            echo "This is a PR to 'main'. Checking source branch...";
+            git fetch --all;
+            source_branch=$BITBUCKET_PR_SOURCE;
+            if [ "$source_branch" != "develop" ]; then
+            echo "Pull request to 'main' must come from 'develop' branch. Source branch is $source_branch.";
+            exit 1;
             else
-              echo "Not a pull request to 'main', skipping branch check.";
+            echo "Source branch is 'develop', PR check passed.";
+            fi
+            else
+            echo "Destination branch is not 'main', skipping check.";
+            fi
+            else
+            echo "Not in a PR context, skipping check.";
             fi
 
     - step:
-        name: Clean Up Branches
+        name: Clean Up Merged Feature Branches
         script:
           - echo "Fetching all branches..."
           - git fetch --all
-          - echo "Cleaning up merged branches..."
-          - git branch -r --merged origin/develop | grep -v '\->' | grep -v 'develop$' | while read -r branch; do
+          - if [ "$BITBUCKET_PR_DESTINATION" == "develop" ]; then
+            echo "PR is targeting 'develop'. Proceeding with branch cleanup...";
+            merged_branches=$(git branch -r --merged origin/develop | grep -v '\->' | grep -E 'origin/feature-.*');
+            echo "$merged_branches" | while read -r branch; do
+            if [[ "$branch" =~ ^origin/feature-.* ]]; then
+            echo "Deleting merged branch ${branch#origin/}";
             git push origin --delete "${branch#origin/}";
-            done
+            fi
+            done;
+            else
+            echo "Not a merge to 'develop', skipping branch cleanup.";
+            fi
+
 
     - step:
         name: Sync GitHub Mirror
