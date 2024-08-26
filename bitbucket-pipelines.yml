@@ -20,19 +20,21 @@ pipelines:
     - step:
         name: Check PR Source for Main
         script:
-          - echo "Checking if the pull request is targeting 'main' branch..."
-          - echo "BITBUCKET_PR_DESTINATION $BITBUCKET_PR_DESTINATION"
-          - echo "BITBUCKET_PR_SOURCE $BITBUCKET_PR_SOURCE"
-          - if [ "$BITBUCKET_PR_DESTINATION" == "main" ]; then
-            echo "Pull request targets 'main'. Checking if source branch is 'develop'...";
+          - echo "Checking PR source branch..."
+          - if [ -n "$BITBUCKET_PR_DESTINATION" ]; then
+            if [ "$BITBUCKET_PR_DESTINATION" == "main" || "$target_branch" == "main" ]; then
+            echo "PR targets 'main'. Verifying source branch...";
             if [ "$BITBUCKET_PR_SOURCE" != "develop" ]; then
-            echo "Error Pull request to 'main' must come from 'develop'. Current source branch is $BITBUCKET_PR_SOURCE.";
+            echo "Error PR to 'main' must come from 'develop'. Current source branch is $BITBUCKET_PR_SOURCE.";
             exit 1;
             else
-            echo "PR check passed source branch is 'develop'.";
+            echo "PR source branch is 'develop'. Check passed.";
             fi
             else
-            echo "PR is not targeting 'main', skipping source branch check.";
+            echo "PR does not target 'main', skipping source branch check.";
+            fi
+            else
+            echo "Not in a PR context, skipping source branch check.";
             fi
 
     - step:
