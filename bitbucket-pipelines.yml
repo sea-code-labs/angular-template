@@ -1,4 +1,4 @@
-image: alpine/git:latest
+image: node:18-alpine
 
 pipelines:
   pull-requests:
@@ -8,12 +8,6 @@ pipelines:
           script:
             - echo "Available environment variables:"
             - printenv
-
-      - step:
-          name: Install Node.js and Dependencies
-          script:
-            - apk add --no-cache nodejs npm
-            - npm install
 
       - step:
           name: Check PR Source for Main
@@ -36,6 +30,13 @@ pipelines:
               else
                 echo "Not in a PR context, skipping source branch check."
               fi
+
+      - step:
+          name: Install Node.js and Dependencies
+          script:
+            - apk add --no-cache nodejs npm
+            - npm install
+            - npm install -g npx
 
       - step:
           name: Check and Run Tests
@@ -103,12 +104,6 @@ pipelines:
             - printenv
 
       - step:
-          name: Install Node.js and Dependencies
-          script:
-            - apk add --no-cache nodejs npm
-            - npm install
-
-      - step:
           name: Validate Branch Name
           script:
             - echo "Validating branch name..."
@@ -117,6 +112,13 @@ pipelines:
                 echo "Branch name must start with 'feature-'.";
                 exit 1;
               fi
+
+      - step:
+          name: Install Node.js and Dependencies
+          script:
+            - apk add --no-cache nodejs npm
+            - npm install
+            - npm install -g npx
 
       - step:
           name: Check and Run Tests
