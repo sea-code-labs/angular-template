@@ -14,9 +14,7 @@
     "format": "npm run prettier && npm run eslint",
     "-----ANGULAR-----": "exit 0",
     "ng:app": "node ./scripts/create-app.js",
-    "ng:lib": "node ./scripts/create-lib.js",
-    "-----GIT-----": "exit 0",
-    "git:new-branch": "git checkout -b"
+    "ng:lib": "node ./scripts/create-lib.js"
   },
   "private": true,
   "dependencies": {
