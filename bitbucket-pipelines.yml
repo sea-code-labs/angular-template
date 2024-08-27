@@ -35,8 +35,8 @@ pipelines:
           name: Run Tests
           script:
             - if [ ! -f "angular.json" ] || ! grep -q '"projects" { ' angular.json; then
-                echo "No projects found in angular.json. Skipping tests.";
-                exit 0;
+              echo "No projects found in angular.json. Skipping tests.";
+              exit 0;
               fi
             - echo "Installing dependencies..."
             - npm install
@@ -63,6 +63,7 @@ pipelines:
                 if [[ "$branch" =~ ^origin/feature- ]]; then
                   echo "Deleting merged branch ${branch#origin/}"
                   git push origin --delete "${branch#origin/}"
+                  git fetch -p
                 fi
                 done
               else
