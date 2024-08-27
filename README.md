@@ -1,27 +1,55 @@
-# Test
+# Angular Project Template
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.2.
+## Introduction
 
-## Development server
+This repository serves as a base template for all Angular projects in our organization. The template is designed to follow best practices for Angular development, ensuring consistency, scalability, and maintainability across all projects. It includes predefined configurations, structures, and tools to simplify the project setup and speed up development.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Features
 
-## Code scaffolding
+- **Modular Architecture**: Encourages a scalable and maintainable codebase.
+- **SCSS Support**: Preconfigured for writing styles in SCSS.
+- **Linting and Formatting**: Integrated ESLint and Prettier for code quality.
+- **Testing**: Configured for unit tests using Karma and Jasmine.
+- **CI/CD Ready**: Includes configurations for continuous integration pipelines.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Getting Started
 
-## Build
+### Prerequisites
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+To work with this template, ensure that you have the following installed:
 
-## Running unit tests
+- [Node.js](https://nodejs.org/)
+- [Angular CLI](https://angular.dev/tools/cli)
+- [Git](https://git-scm.com/)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Installation
 
-## Running end-to-end tests
+1. Clone the repository:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+   ```bash
+   git clone git@bitbucket.org:sea-code-labs/angular-template.git
+   cd angular-template
+   ```
 
-## Further help
+2. Install the project dependencies:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+   ```bash
+   npm install
+   ```
+
+### Project Structure
+
+```text
+angular-template/
+├──
+│   ├──
+│   │   ├──
+│   │   ├──
+│   │   ├──
+│   └──
+├──
+├──
+├──
+├──
+└──
+```
