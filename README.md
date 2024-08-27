@@ -87,3 +87,5 @@ angular-template/
 
 For detailed information about development flow,
 visit [development documentation]().
+
+**@sea-code-labs**
