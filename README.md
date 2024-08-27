@@ -24,18 +24,18 @@ To work with this template, ensure that you have the following installed:
 
 ### Installation
 
-1. Clone the repository:
+1.Clone the repository:
 
-   ```bash
-   git clone git@bitbucket.org:sea-code-labs/angular-template.git
-   cd angular-template
-   ```
+```bash
+git clone git@bitbucket.org:sea-code-labs/angular-template.git
+cd angular-template
+```
 
-2. Install the project dependencies:
+2.Install the project dependencies:
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
 ### Project Structure
 
