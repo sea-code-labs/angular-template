@@ -10,11 +10,11 @@ module.exports = {
     {
       rules: {
         'header-match-pattern': ({ header }): [boolean, string] => {
-          const jiraAndTypeRegex: RegExp = /^SC-\d+\s(feat|fix|docs|style|refactor|test|chore):\s.+/;
+          const jiraAndTypeRegex: RegExp = /^SC-\d+\s(feat|fix|docs|refactor|test):\s.+/;
           return [
             jiraAndTypeRegex.test(header),
             'Header must contain a JIRA issue number starting with SC- followed by a type and description \n' +
-              'example: SC-[number] [feat|fix|docs|style|refactor|test|chore]: [message] [?version]',
+              'example: SC-[number] [feat|fix|docs|refactor|test]: [message] [?version]',
           ];
         },
       },

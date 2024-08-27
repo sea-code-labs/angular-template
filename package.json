@@ -9,11 +9,14 @@
     "clean": "rimraf node_modules/ && rimraf ./package-lock.json && npm cache clean -f",
     "rebuild": "npm run clean && npm run npm:i",
     "-----CODE-GLANCE-----": "exit 0",
-    "prettier": "npx prettier --write",
-    "eslint": "npx eslint --fix",
+    "prettier": "npx prettier --write .",
+    "eslint": "npx eslint --fix .",
+    "format": "npm run prettier && npm run eslint",
     "-----ANGULAR-----": "exit 0",
     "ng:app": "node ./scripts/create-app.js",
-    "ng:lib": "node ./scripts/create-lib.js"
+    "ng:lib": "node ./scripts/create-lib.js",
+    "-----GIT-----": "exit 0",
+    "git:new-branch": "git checkout -b"
   },
   "private": true,
   "dependencies": {

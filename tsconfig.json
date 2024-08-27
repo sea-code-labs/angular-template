@@ -22,9 +22,7 @@
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
     "paths": {
-      "test": [
-        "./dist/test"
-      ]
+      "test": ["./dist/test"]
     }
   },
   "angularCompilerOptions": {
