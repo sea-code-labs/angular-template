@@ -1,4 +1,4 @@
-image: seacodelabs/node-20-chromium
+image: seacodelabs/node-20-chromium:latest
 
 pipelines:
   pull-requests:
