@@ -95,53 +95,40 @@ pipelines:
     # Branch feature-* (push)
     feature-*:
       - step:
-          # Sync the Bitbucket repository with the GitHub mirror
-          name: Sync GitHub Mirror
-          clone:
-            enabled: false
+          name: Env
           script:
-            - echo "Cloning Bitbucket repository as a bare clone..."
-            # Perform a bare clone of the Bitbucket repository
-            - git clone --bare git@bitbucket.org:sea-code-labs/angular-template.git
-            - cd angular-template.git
-            - echo "Pushing to GitHub mirror..."
-            # Push all refs to the GitHub mirror
-            - git push --mirror git@github.com:sea-code-labs/angular-template.git
-#      - step:
-#          name: Env
-#          script:
-#            - printenv
-#
-#      - step:
-#          # Validate that the branch name starts with 'feature-'
-#          name: Validate Branch Name
-#          script:
-#            - echo "Validating branch name..."
-#            - |
-#              # Ensure the branch name starts with 'feature-'
-#              if [[ ! "$BITBUCKET_BRANCH" =~ ^feature- ]]; then
-#                echo "Error: Branch name must start with 'feature-'."
-#                exit 1
-#              fi
-#              echo "Branch name validation passed."
-#
-#      - step:
-#          # Install dependencies and save cache for subsequent steps
-#          name: Install Dependencies and Cache
-#          caches:
-#            - node
-#          script:
-#            - echo "Installing dependencies..."
-#            - npm install
-#
-#      - step:
-#          # Run tests to validate the changes on the feature branch
-#          name: Run Tests
-#          caches:
-#            - node
-#          script:
-#            - echo "Running tests..."
-#            - npx ng test --watch=false
+            - printenv
+
+      - step:
+          # Validate that the branch name starts with 'feature-'
+          name: Validate Branch Name
+          script:
+            - echo "Validating branch name..."
+            - |
+              # Ensure the branch name starts with 'feature-'
+              if [[ ! "$BITBUCKET_BRANCH" =~ ^feature- ]]; then
+                echo "Error: Branch name must start with 'feature-'."
+                exit 1
+              fi
+              echo "Branch name validation passed."
+
+      - step:
+          # Install dependencies and save cache for subsequent steps
+          name: Install Dependencies and Cache
+          caches:
+            - node
+          script:
+            - echo "Installing dependencies..."
+            - npm install
+
+      - step:
+          # Run tests to validate the changes on the feature branch
+          name: Run Tests
+          caches:
+            - node
+          script:
+            - echo "Running tests..."
+            - npx ng test --watch=false
 
     # Branch develop (push)
     develop:
