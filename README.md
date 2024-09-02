@@ -14,7 +14,7 @@ This repository serves as a base template for all Angular projects in our organi
 - **Nginx Configuration**: Comes with pre-configured Nginx settings for optimized web serving.
 - **Dockerfile**: Provides a Dockerfile for containerizing the application.
 - **Sync Scripts**: Includes scripts for synchronizing with remote repositories.
-- **Git Flow Checks**: Implements checks to ensure adherence to Git Flow workflows.
+- **Git Flow Checks**: Implements checks to ensure adherence to Git Flow workflows. 
 
 ## Getting Started
 
