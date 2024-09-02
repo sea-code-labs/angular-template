@@ -6,7 +6,7 @@ This repository serves as a base template for all Angular projects in our organi
 
 ## Features
 
-- **Modular Architecture**: Encourages a scalable and maintainable codebase.
+- **Modular Architecture**: Encourages a scalable and maintainable codebase. 
 - **SCSS Support**: Preconfigured for writing styles in SCSS.
 - **Linting and Formatting**: Integrated ESLint and Prettier for code quality.
 - **Testing**: Configured for unit tests using Karma and Jasmine.
