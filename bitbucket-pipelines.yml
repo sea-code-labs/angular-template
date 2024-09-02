@@ -1,4 +1,3 @@
-# Use Node.js v20 image as the base for the pipeline
 image: seacodelabs/node20-chromium:latest
 
 pipelines:
