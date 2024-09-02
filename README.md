@@ -20,7 +20,7 @@ This repository serves as a base template for all Angular projects in our organi
 
 ### Prerequisites
 
-To work with this template, ensure that you have the following installed: 
+To work with this template, ensure that you have the following installed:
 
 - [Node.js](https://nodejs.org/)
 - [Angular CLI](https://angular.dev/tools/cli)
