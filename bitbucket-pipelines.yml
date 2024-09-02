@@ -1,4 +1,5 @@
-image: seacodelabs/node-20-chromium:latest
+# Use Node.js v20 image as the base for the pipeline
+image: seacodelabs/node20-chromium:latest
 
 pipelines:
   pull-requests:
@@ -49,6 +50,10 @@ pipelines:
           caches:
             - node
           script:
+            - echo "Installing chromium..."
+            - apt-get update
+            - apt-get install -y chromium
+            - export CHROME_BIN=/usr/bin/chromium
             - echo "Running tests..."
             - npx ng test --watch=false
 
@@ -88,6 +93,10 @@ pipelines:
           caches:
             - node
           script:
+            - echo "Installing chromium..."
+            - apt-get update
+            - apt-get install -y chromium
+            - export CHROME_BIN=/usr/bin/chromium
             - echo "Running tests..."
             - npx ng test --watch=false
 
@@ -127,6 +136,11 @@ pipelines:
           caches:
             - node
           script:
+            - echo "Installing chromium..."
+            - apt-get update
+            - apt-get install -y chromium
+            - export CHROME_BIN=/usr/bin/chromium
+            - echo "Running tests..."
             - npx ng test --watch=false
 
     # Branch develop (push)
@@ -151,6 +165,11 @@ pipelines:
           caches:
             - node
           script:
+            - echo "Installing chromium..."
+            - apt-get update
+            - apt-get install -y chromium
+            - export CHROME_BIN=/usr/bin/chromium
+            - echo "Running tests..."
             - npx ng test --watch=false
 
       - step:
@@ -213,6 +232,11 @@ pipelines:
           caches:
             - node
           script:
+            - echo "Installing chromium..."
+            - apt-get update
+            - apt-get install -y chromium
+            - export CHROME_BIN=/usr/bin/chromium
+            - echo "Running tests..."
             - npx ng test --watch=false
 
       - step:
