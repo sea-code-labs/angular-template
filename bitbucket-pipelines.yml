@@ -3,7 +3,7 @@ image: seacodelabs/node20-chromium:latest
 pipelines:
   pull-requests:
     # Pull request from feature-* to develop
-    "feature-*":
+    'feature-*':
       - step:
           name: Env
           script:
@@ -181,11 +181,11 @@ pipelines:
           script:
             - echo "Cloning Bitbucket repository as a bare clone..."
             # Perform a bare clone of the Bitbucket repository
-            - git clone --bare git@bitbucket.org:sea-code-labs/angular-template.git
-            - cd angular-template.git
+            - git clone --bare git@bitbucket.org:sea-code-labs/template-angular.git
+            - cd template-angular.git
             - echo "Pushing to GitHub mirror..."
             # Push all refs to the GitHub mirror
-            - git push --mirror git@github.com:sea-code-labs/angular-template.git
+            - git push --mirror git@github.com:sea-code-labs/template-angular.git
 
       - step:
           # Mock deploy to the test environment after pushing to develop
@@ -196,9 +196,9 @@ pipelines:
     # Branch main (push)
     main:
       - step:
-            name: Env
-            script:
-              - printenv
+          name: Env
+          script:
+            - printenv
 
       - step:
           # Install dependencies and save cache for subsequent steps
@@ -226,11 +226,11 @@ pipelines:
           script:
             - echo "Cloning Bitbucket repository as a bare clone..."
             # Perform a bare clone of the Bitbucket repository
-            - git clone --bare git@bitbucket.org:sea-code-labs/angular-template.git
-            - cd angular-template.git
+            - git clone --bare git@bitbucket.org:sea-code-labs/template-angular.git
+            - cd template-angular.git
             - echo "Pushing to GitHub mirror..."
             # Push all refs to the GitHub mirror
-            - git push --mirror git@github.com:sea-code-labs/angular-template.git
+            - git push --mirror git@github.com:sea-code-labs/template-angular.git
 
       - step:
           # Mock deploy to the production environment after pushing to main
