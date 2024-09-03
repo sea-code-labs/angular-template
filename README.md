@@ -1,4 +1,4 @@
-# Angular Template
+# Template Angular
 
 ## Introduction
 
@@ -31,9 +31,9 @@ To work with this template, ensure that you have the following installed:
 1.Clone the repository:
 
 ```bash
-git clone git@bitbucket.org:sea-code-labs/angular-template.git
+git clone git@bitbucket.org:sea-code-labs/template-angular.git
 
-cd angular-template
+cd template-angular
 ```
 
 2.Install the project dependencies:
@@ -49,7 +49,7 @@ npm run scripts:grant:access
 ### Default Project Structure
 
 ```text
-angular-template/
+template-angular/
 ├── .husky
 │   ├── commit-msg
 │   ├── pre-commit
