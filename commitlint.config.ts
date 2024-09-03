@@ -20,16 +20,16 @@ module.exports = {
   rules: {
     // Rule to enforce that the header includes a JIRA issue number, a type (feat, fix, etc.), and a message
     'header-match-pattern': [
-      2,                // Severity level (error)
-      'always',         // Always apply this rule
-      /^SC-\d+\s(feat|fix|docs|style|refactor|test|chore):\s.+/ // Regex to validate the header format
+      2, // Severity level (error)
+      'always', // Always apply this rule
+      /^SC-\d+\s(feat|fix|docs|style|refactor|test|chore):\s.+/, // Regex to validate the header format
     ],
 
     // Rule to enforce a version number in the format X.X.X (where X is a number up to 5 digits long)
     'version-format': [
-      2,                // Severity level (error)
-      'always',         // Always apply this rule
-      /^[0-9]\.[0-9]\.[0-9]$/ // Regex to ensure the version format is valid
+      2, // Severity level (error)
+      'always', // Always apply this rule
+      /^[0-9]\.[0-9]\.[0-9]$/, // Regex to ensure the version format is valid
     ],
 
     // Rule to ensure the subject field of the commit is not empty
@@ -50,7 +50,7 @@ module.exports = {
           return [
             jiraAndTypeRegex.test(header), // Test the header against the regex
             'Header must contain a JIRA issue number starting with SC- followed by a type and description. \n' +
-            'Example: SC-[number] [feat|fix|docs|refactor|test]: [message] [version].'
+              'Example: SC-[number] [feat|fix|docs|refactor|test]: [message] [version].',
           ];
         },
 
@@ -65,7 +65,7 @@ module.exports = {
           const hasVersion = versionRegex.test(version);
           return [
             hasVersion, // Return true if the version is valid
-            'Commit message must end with a version number in the format X.X.X, where X can be up to 5 digits long.'
+            'Commit message must end with a version number in the format X.X.X, where X can be up to 5 digits long.',
           ];
         },
       },
